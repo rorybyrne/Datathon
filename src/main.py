@@ -14,6 +14,8 @@ history = keras.train_model(nn, train, test)
 graph_functions.plot_loss(history.history, "loss_plot")
 graph_functions.plot_accuracy(history.history, "accuracy_plot")
 
+graph_functions.plot_with_seaborn(history.history)
+
 
 
 print(":)")

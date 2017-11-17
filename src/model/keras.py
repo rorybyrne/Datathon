@@ -5,7 +5,7 @@ from keras.layers import Dense
 # Hyperparams
 batch_size = 10
 num_classes = 2
-epochs = 20
+epochs = 100
 learning_rate = 0.001
 
 def build_network():
