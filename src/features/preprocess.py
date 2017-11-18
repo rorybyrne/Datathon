@@ -22,3 +22,13 @@ def normalise(df):
     # pprint(out_df)
 
     return out_df
+
+def get_one_hot(df, col_name):
+    '''Takes a col name and a df and deletes that col and appends a one hot
+    matrix of it encoded.'''
+    dummies = pd.get_dummies(df[col_name], prefix=col_name)
+    df = df.join(dummies)
+    df = df.drop(col_name, 1)
+
+    return df
+

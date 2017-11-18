@@ -60,7 +60,17 @@ def get_input():
 
     # pprint(total_normalised)
 
+
+    # one hot categorical variables:
+    cat_features = ['Month', 'Weekday']
+    for feature in cat_features:
+        total_normalised = pp.get_one_hot(total_normalised, feature)
+
     train, test = train_test_split(total_normalised)
+
+    #print("TOTOGOGJIOT")
+    #pprint(total_normalised)
+    #print("TOTOGOGJIOT")
 
     # Split data into x and y
     x_train, y_train = xy_split(train)
@@ -76,7 +86,28 @@ def get_input():
     return (x_train, y_train, x_test, y_test, id)
 
 def xy_split(train):
-    x = train[['Weekday', 'Month', 'AWND', 'PRCP', 'SNOW', 'TAVG', 'TMAX', 'TMIN', 'Holiday']]
+    feature_list = ['Weekday_0',
+            'Weekday_1',
+            'Weekday_2',
+            'Weekday_3',
+            'Weekday_4',
+            'Weekday_5',
+            'Weekday_6',
+            'Month_1',
+            'Month_2',
+            'Month_3',
+            'Month_4',
+            'Month_5',
+            'Month_6',
+            'Month_7',
+            'Month_8',
+            'Month_9',
+            'Month_10',
+            'Month_11',
+            'Month_12',
+            'AWND', 'PRCP', 'SNOW', 'TAVG', 'TMAX', 'TMIN', 'Holiday']
+
+    x = train[feature_list]
     y = train[['BikeRides']]
 
     return (x, y)

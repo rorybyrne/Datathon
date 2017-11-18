@@ -19,7 +19,7 @@ class Kegression(BaseModel):
         '''Builds a Keras MLP and returns the compiled model.'''
         model = Sequential()
 
-        model.add(Dense(50, activation='relu', input_shape=(9,)))
+        model.add(Dense(50, activation='relu', input_shape=(26,)))
         model.add(Dense(60, activation='relu'))
         model.add(Dense(50, activation='relu'))
         model.add(Dense(50, activation='relu'))
