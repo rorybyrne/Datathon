@@ -37,4 +37,6 @@ random_forest.train(x_train, y_train, x_test, y_test)
 graph_functions.plot_loss(history.history, "loss_plot")
 graph_functions.plot_accuracy(history.history, "accuracy_plot")
 
+graph_functions.plot_with_seaborn(history.history)
+
 print(":)")
