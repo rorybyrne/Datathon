@@ -31,14 +31,11 @@ def get_input():
     '''
     total_raw = load_csv(TOTAL_TRAINING)
 
-    # Drop NaNs
-    total_dropped_nan = pp.drop_nan(total_raw)
-
     # Get ID col
-    ids = total_dropped_nan['ID']
+    ids = total_raw['ID']
 
     # Get relevant cols
-    selected = total_dropped_nan[['Weekday', 'Month', 'AWND', 'PRCP', 'SNOW', 'TAVG', 'TMAX', 'TMIN', 'BikeRides', 'Holiday']]
+    selected = total_raw[['Weekday', 'Month', 'AWND', 'PRCP', 'SNOW', 'TAVG', 'TMAX', 'TMIN', 'BikeRides', 'Holiday']]
 
     # Normalise cols
     normalised = pp.process(selected)
@@ -51,7 +48,7 @@ def get_input():
     # one hot categorical variables:
     cat_features = ['Month', 'Weekday']
     for feature in cat_features:
-        total_normalised = pp.get_one_hot(normalised, feature)
+        normalised = pp.get_one_hot(normalised, feature)
 
     train, test = train_test_split(normalised)
 
@@ -64,13 +61,13 @@ def get_input():
     x_test, y_test = xy_split(test)
 
     # From Pandas to Numpy
-    x_train = x_train.values
-    x_test = x_test.values
+    x_train = x_train.reindex_axis(sorted(x_train.columns), axis=1).values
+    x_test = x_test.reindex_axis(sorted(x_test.columns), axis=1).values
 
     y_train = y_train.values
     y_test = y_test.values
 
-    return (x_train, y_train, x_test, y_test, id)
+    return (x_train, y_train, x_test, y_test, ids)
 
 def xy_split(train):
     feature_list = ['Weekday_0',

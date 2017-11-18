@@ -2,9 +2,9 @@
 #####################
 ###     KERAS     ###
 #####################
-BATCH_SIZE = 10
-EPOCHS = 100
-LEARNING_RATE = 0.01
+BATCH_SIZE = 500
+EPOCHS = 10000
+LEARNING_RATE = 0.001
 
 #####################
 ### RANDOM FOREST ###

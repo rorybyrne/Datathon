@@ -4,48 +4,62 @@ from pprint import pprint
 
 scaler = preprocessing.MinMaxScaler()
 
-def preprocess(df):
-    df = drop_nan(df)
+def fix_nan(df):
+    # val_cols = ['AWND', 'PRCP', 'SNOW', 'TAVG', 'TMAX', 'TMIN']
+    return df.fillna(df.mean()[['AWND', 'PRCP', 'SNOW', 'TAVG', 'TMAX', 'TMIN']])
 
+    # return df.dropna()
+
+def remove_negs(df, col):
+    df[col] = df[df[col] < 0]
     return df
-
-def drop_nan(df):
-    return df.dropna()
 
 def process(df):
     # Select cols to normalise
     total = df
-    # total = remove_outliers(total, 'TMIN')
-    # total = remove_outliers(total, 'TMAX')
-    total = remove_outliers(total, 'TAVG')
-    # total = remove_outliers(total, 'PRCP')
 
-    to_normalise = total[['AWND', 'PRCP', 'SNOW', 'TAVG', 'TMAX', 'TMIN']]
+    # total = remove_negs(total, "SNOW")
+    # total = fix_outliers(total, 'TMIN')
+    # total = fix_outliers(total, 'TMAX')
+    total = fix_outliers(total, 'AWND', 0.01, 0.99)
+    total = fix_outliers(total, 'TAVG', 0.01, 0.99)
+    # total = fix_outliers(total, 'SNOW', 0.25, 0.75)
+    # total = fix_outliers(total, 'PRCP')
 
-    x = to_normalise.values
-    x_scaled = scaler.fit_transform(x)
+    total = fix_nan(total)
 
-    normalised_cols = pd.DataFrame(x_scaled, columns=to_normalise.columns)
+    # to_normalise = total[['AWND', 'PRCP', 'SNOW', 'TAVG', 'TMAX', 'TMIN']]
+
+    # x = to_normalise.values
+    # x_scaled = scaler.fit_transform(x)
+
+    # normalised_cols = to_normalise #pd.DataFrame(x_scaled, columns=to_normalise.columns)
 
     # Select non-normalise cols
-    not_normalise = total[['Weekday', 'Month', 'BikeRides', 'Holiday']].reset_index()
-    print("not_normalise shape: (%s, %s)" % not_normalise.shape)
-    pprint(not_normalise)
+    # not_normalise = nan_fix[['Weekday', 'Month', 'BikeRides', 'Holiday']].reset_index()
+    # print("not_normalise shape: (%s, %s)" % not_normalise.shape)
+    # pprint(not_normalise)
+    #
+    # total_normalised = not_normalise.join(normalised_cols)
+    # print("Total normalised shape: (%s, %s)" % total_normalised.shape)
 
-    total_normalised = not_normalise.join(normalised_cols)
-    print("Total normalised shape: (%s, %s)" % total_normalised.shape)
+    return total
 
-    return total_normalised
-
-def remove_outliers(df_in, col_name):
+def fix_outliers(df_in, col_name, q1, q3):
     # q = df_in[col_name].quantile(0.90)
     # return df_in[df_in[col_name] < q]
 
-    q1 = df_in[col_name].quantile(0.1)
-    q3 = df_in[col_name].quantile(0.9)
+    print(df_in[col_name])
+
+    q1 = df_in[col_name].quantile(q1)
+    print(q1)
+    q3 = df_in[col_name].quantile(q3)
+    print(q3)
     iqr = q3 - q1  # Interquartile range
     fence_low = q1 - 1.5 * iqr
+    print("fence_low: %s" % fence_low)
     fence_high = q3 + 1.5 * iqr
+    print("fence_high: %s" % fence_high)
     df_out = df_in.loc[(df_in[col_name] > fence_low) & (df_in[col_name] < fence_high)]
     return df_out
 

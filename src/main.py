@@ -5,6 +5,10 @@ from util import constants as const
 
 from model import get_model
 
+import numpy as np
+
+import pandas as pd
+
 
 
 def run():
@@ -21,11 +25,18 @@ def run():
     kegression = keg(const.BATCH_SIZE, const.EPOCHS, const.LEARNING_RATE)
     # Needed for producing train/test loss/accuracy graphs.
     # KERAS ONLY
+    np.savetxt("out/x_train.csv", x_train, delimiter="\t")
     history = kegression.train(x_train, y_train, x_test, y_test)
 
     preds = kegression.predict(x_test)
-    for i, j in zip(preds, y_test):
+
+    out_df = pd.DataFrame()
+    for i, j, k in zip(preds, y_test, id):
+        s = pd.Series(data=[i[0], j[0], k])
+        out_df = out_df.append(s, ignore_index=True)
         print("Guess %s || Actual %s" % (i[0], j[0]))
+
+    out_df.to_csv("out/out.csv", header=None, index=False)
 
     ################################
     ### Random Forest Regression ###

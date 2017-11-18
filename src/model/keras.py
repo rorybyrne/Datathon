@@ -1,11 +1,11 @@
 import keras
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, LeakyReLU, Dropout
 
 from .model import BaseModel
 
 class Kegression(BaseModel):
-    def __init__(self, batch_size, epochs, learning_rate = 0.001):
+    def __init__(self, batch_size, epochs, learning_rate=0.001):
         BaseModel.__init__(self)
 
         # Hyperparameters
@@ -19,11 +19,14 @@ class Kegression(BaseModel):
         '''Builds a Keras MLP and returns the compiled model.'''
         model = Sequential()
 
-        model.add(Dense(50, activation='relu', input_shape=(26,)))
-        model.add(Dense(60, activation='relu'))
-        model.add(Dense(50, activation='relu'))
-        model.add(Dense(50, activation='relu'))
-        model.add(Dense(50, activation='relu'))
+        model.add(Dense(5,input_shape=(26,)))
+        model.add(LeakyReLU())
+        model.add(Dropout(0.2))
+        model.add(Dense(8))
+        model.add(LeakyReLU())
+        model.add(Dropout(0.3))
+        model.add(Dense(5))
+        model.add(LeakyReLU())
         model.add(Dense(1))
 
         model.compile(loss='mean_squared_error',
