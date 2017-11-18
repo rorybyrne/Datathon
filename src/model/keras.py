@@ -2,41 +2,53 @@ import keras
 from keras.models import Sequential
 from keras.layers import Dense
 
-# Hyperparams
-batch_size = 10
-num_classes = 2
-epochs = 100
-learning_rate = 0.001
+from .model import BaseModel
 
-def build_network():
-    '''Builds a Keras MLP and returns the compiled model.'''
-    model = Sequential()
+class Kegression(BaseModel):
+    def __init__(self, batch_size, epochs, learning_rate = 0.001):
+        BaseModel.__init__(self)
 
-    model.add(Dense(5, activation='relu', input_shape=(2,)))
-    model.add(Dense(15, activation='relu'))
-    model.add(Dense(5, activation='relu'))
-    model.add(Dense(num_classes, activation='softmax'))
+        # Hyperparameters
+        self._batch_size = batch_size
+        self._epochs = epochs
+        self._learning_rate = learning_rate
 
-    model.compile(loss='categorical_crossentropy',
-            optimizer='sgd',
-            metrics=['accuracy'])
-    return model
+        self.model = self.construct_model()
 
+    def construct_model(self):
+        '''Builds a Keras MLP and returns the compiled model.'''
+        model = Sequential()
 
-def train_model(model, train, test):
-    '''Trains a compiled model on X and y and validates on X_test and y_test.
-    Returns the model's history.'''
-    X = train.ix[:,:-1].as_matrix()
-    y = keras.utils.to_categorical(train.ix[:,-1], num_classes)
-    X_test= test.ix[:,:-1].as_matrix()
-    y_test = keras.utils.to_categorical(test.ix[:,-1], num_classes)
+        model.add(Dense(5, activation='relu', input_shape=(2,)))
+        model.add(Dense(15, activation='relu'))
+        model.add(Dense(5, activation='relu'))
+        model.add(Dense(1))
 
-    return model.fit(X, y,
-            batch_size=batch_size,
-            epochs=epochs,
-            verbose=1,
-            validation_data=(X_test, y_test))
+        model.compile(loss='mean_squared_error',
+                      optimizer='adam',
+                      metrics=['mse'])
+        return model
 
-def evaluate_model(model, X_test, y_test):
-    '''Returns a trained models performance on test data.'''
-    return model.evaluate(X_test, y_test, verbose=0)
+    def train(self, x_train, y_train, x_test, y_test):
+        '''Trains a compiled model on X and y and validates on X_test and y_test.
+        Returns the model's history.'''
+
+        # TODO: Move into a static file for preparing data
+        # X = train.ix[:, :-1].as_matrix()
+        # y = keras.utils.to_categorical(train.ix[:, -1], self.num_classes)
+        # X_test = test.ix[:, :-1].as_matrix()
+        # y_test = keras.utils.to_categorical(test.ix[:, -1], self.num_classes)
+
+        return self.model.fit(x_train, y_train,
+                         batch_size=self._batch_size,
+                         epochs=self._epochs,
+                         verbose=1,
+                         validation_data=(x_test, y_test))
+
+    def test(self, x_test, y_test):
+        loss = self.model.evaluate(x_test, y_test, verbose=0)
+
+        print("Loss: %.2f" % loss)
+
+    def predict(self, x):
+        return self.model.predict(x, batch_size=self._batch_size)
