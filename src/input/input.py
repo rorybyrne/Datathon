@@ -60,8 +60,6 @@ def get_input():
     processed = pp.process(selected)
     print(processed.describe())
 
-
-
     # one hot categorical variables:
     cat_features = ['Month', 'Weekday']
     for feature in cat_features:

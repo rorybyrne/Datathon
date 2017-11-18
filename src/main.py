@@ -51,13 +51,12 @@ def run():
     random_forest = rf(const.N_ESTIMATORS)
     random_forest.train(x_train, y_train, x_test, y_test)
 
-    total_guess = []
-    total_actual = []
     output = []
+    real_guess = []
 
     for i in range(len(real_test_data)):
         guess = random_forest.predict([real_test_data[i, :]])
-        total_guess.append(guess)
+        real_guess.append(guess)
 
         output.append((ids[i]+1, guess[0]))
 
@@ -67,6 +66,9 @@ def run():
             f.write(",".join(i))
             f.write("\n")
 
+    total_guess = []
+    total_actual = []
+
     for i in range(len(x_test)):
         guess = random_forest.predict([x_test[i, :]])
         actual = y_test[i, :]
@@ -74,7 +76,7 @@ def run():
         total_guess.append(guess)
         total_actual.append(actual)
 
-    print(mean_squared_error(total_actual, total_guess))
+    print(np.sqrt(mean_squared_error(total_actual, total_guess)))
 
     #############################
     ###    Output & Graphs    ###

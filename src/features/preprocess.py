@@ -29,7 +29,7 @@ def process(df):
     total = fix_outliers(total, 'TMIN', 0.25, 0.75)
     total = fix_outliers(total, 'TMAX', 0.25, 0.75)
     total = remove_negs(total, 'AWND')
-    total = fix_outliers(total, 'TAVG', 0.25, 0.75)
+    total = fix_outliers(total, 'TAVG', 0.1, 0.9)
     # total = fix_outliers(total, 'SNOW', 0.25, 0.75)
     # total = fix_outliers(total, 'PRCP', 0.25, 0.75)
 
