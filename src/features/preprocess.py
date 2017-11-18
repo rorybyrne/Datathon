@@ -6,12 +6,13 @@ scaler = preprocessing.MinMaxScaler()
 
 def fix_nan(df):
     # val_cols = ['AWND', 'PRCP', 'SNOW', 'TAVG', 'TMAX', 'TMIN']
-    return df.fillna(df.mean()[['AWND', 'PRCP', 'SNOW', 'TAVG', 'TMAX', 'TMIN']])
+    # return df.fillna(df.mean())
 
-    # return df.dropna()
+    return df.dropna()
 
 def remove_negs(df, col):
-    df[col] = df[df[col] < 0]
+    print(col)
+    df = df[df[col] > 0]
     return df
 
 def process(df):
@@ -19,12 +20,14 @@ def process(df):
     total = df
 
     # total = remove_negs(total, "SNOW")
-    # total = fix_outliers(total, 'TMIN')
-    # total = fix_outliers(total, 'TMAX')
-    total = fix_outliers(total, 'AWND', 0.01, 0.99)
-    total = fix_outliers(total, 'TAVG', 0.01, 0.99)
+    total = fix_outliers(total, 'TMIN', 0.25, 0.75)
+    total = fix_outliers(total, 'TMAX', 0.25, 0.75)
+    total = remove_negs(total, 'AWND')
+    total = fix_outliers(total, 'TAVG', 0.25, 0.75)
     # total = fix_outliers(total, 'SNOW', 0.25, 0.75)
-    # total = fix_outliers(total, 'PRCP')
+    # total = fix_outliers(total, 'PRCP', 0.25, 0.75)
+
+    print(total.describe())
 
     total = fix_nan(total)
 
@@ -49,7 +52,9 @@ def fix_outliers(df_in, col_name, q1, q3):
     # q = df_in[col_name].quantile(0.90)
     # return df_in[df_in[col_name] < q]
 
-    print(df_in[col_name])
+    # print(df_in[col_name])
+
+    print(col_name)
 
     q1 = df_in[col_name].quantile(q1)
     print(q1)
