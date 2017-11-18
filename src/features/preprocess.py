@@ -18,7 +18,7 @@ def normalise(df):
     x_scaled = scaler.fit_transform(x)
 
     out_df = pd.DataFrame(x_scaled, columns=df.columns)
-    print("Normalized Cols")
-    pprint(out_df)
+    # print("Normalized Cols")
+    # pprint(out_df)
 
     return out_df

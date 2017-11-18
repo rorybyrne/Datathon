@@ -38,23 +38,25 @@ def get_input():
     ids = total_dropped_nan['ID']
 
     # Get relevant cols
-    selected = total_dropped_nan[['Weekday', 'Month', 'AWND', 'PRCP', 'SNOW', 'TAVG', 'TMAX', 'TMIN', 'BikeRides']]
+    selected = total_dropped_nan[['Weekday', 'Month', 'AWND', 'PRCP', 'SNOW', 'TAVG', 'TMAX', 'TMIN', 'BikeRides', 'Holiday']]
 
     # Select cols to normalise
     to_normalise = selected[['AWND', 'PRCP', 'SNOW', 'TAVG', 'TMAX', 'TMIN']]
     print("to_normalise shape: (%s, %s)" % to_normalise.shape)
+    pprint(to_normalise)
 
     # Select non-normalise cols
-    not_normalise = selected[['Weekday', 'Month', 'BikeRides']]
+    not_normalise = selected[['Weekday', 'Month', 'BikeRides', 'Holiday']].reset_index()
     print("not_normalise shape: (%s, %s)" % not_normalise.shape)
+    pprint(not_normalise)
 
     # Normalise cols
     normalised = pp.normalise(to_normalise)
 
     # Concat
-    total_normalised = not_normalise.append(normalised, axis=1)
+    total_normalised = not_normalise.join(normalised)
     print("Total normalised shape: (%s, %s)" % total_normalised.shape)
-    pprint(total_normalised)
+    # pprint(total_normalised)
 
     # pprint(total_normalised)
 
@@ -74,7 +76,7 @@ def get_input():
     return (x_train, y_train, x_test, y_test, id)
 
 def xy_split(train):
-    x = train[['Weekday', 'Month', 'AWND', 'PRCP', 'SNOW', 'TAVG', 'TMAX', 'TMIN']]#, 'Holiday']]
+    x = train[['Weekday', 'Month', 'AWND', 'PRCP', 'SNOW', 'TAVG', 'TMAX', 'TMIN', 'Holiday']]
     y = train[['BikeRides']]
 
     return (x, y)
