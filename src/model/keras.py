@@ -19,7 +19,7 @@ class Kegression(BaseModel):
         '''Builds a Keras MLP and returns the compiled model.'''
         model = Sequential()
 
-        model.add(Dense(5, activation='relu', input_shape=(2,)))
+        model.add(Dense(5, activation='relu', input_shape=(8,)))
         model.add(Dense(15, activation='relu'))
         model.add(Dense(5, activation='relu'))
         model.add(Dense(1))
@@ -42,8 +42,7 @@ class Kegression(BaseModel):
         return self.model.fit(x_train, y_train,
                          batch_size=self._batch_size,
                          epochs=self._epochs,
-                         verbose=1,
-                         validation_data=(x_test, y_test))
+                         verbose=1)
 
     def test(self, x_test, y_test):
         loss = self.model.evaluate(x_test, y_test, verbose=0)

@@ -1,7 +1,7 @@
 
 class BaseModel():
     def __init__(self):
-        raise NotImplementedError
+        print("Initializing model...")
 
     def construct_model(self):
         raise NotImplementedError

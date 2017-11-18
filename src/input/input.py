@@ -1,6 +1,6 @@
 import pandas as pd
-from src.util.constants import TOTAL_TRAINING
-from src.features import preprocess as pp
+from util.constants import TOTAL_TRAINING
+from features import preprocess as pp
 
 
 def train_test_split(df, train_percent=0.8):
@@ -22,7 +22,18 @@ def get_input():
 
     train, test = train_test_split(total_prep)
 
-    return (train, test)
+    x_train, y_train = xy_split(train)
+    x_test, y_test = xy_split(test)
+
+
+
+    return (x_train, y_train, x_test, y_test)
+
+def xy_split(train):
+    x = train[['Weekday', 'Month', 'AWND', 'PRCP', 'SNOW', 'TAVG', 'TMAX', 'TMIN']]#, 'Holiday']]
+    y = train[['BikeRides']]
+
+    return (x, y)
 
 
 def load_csv(filename):
