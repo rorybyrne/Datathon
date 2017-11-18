@@ -16,6 +16,22 @@ def train_test_split(df, train_percent=0.8):
 
     return (train, test)
 
+def real_test_data():
+    total_raw = load_csv("data/Testing.csv")
+
+    selected = total_raw[['Weekday', 'Month', 'AWND', 'PRCP', 'SNOW', 'TAVG', 'TMAX', 'TMIN', 'Holiday']]
+
+    cat_features = ['Month', 'Weekday']
+    processed = selected
+    for feature in cat_features:
+        processed = pp.get_one_hot(processed, feature)
+
+    data = processed.reindex_axis(sorted(processed.columns), axis=1)
+    # print(data)
+
+    return data.values
+
+
 def get_input():
     '''
     1) Get raw data
@@ -30,10 +46,9 @@ def get_input():
     :return:
     '''
     total_raw = load_csv(TOTAL_TRAINING)
-    total_raw.describe()
     total_raw = pp.fix_outliers(total_raw, 'BikeRides', 0.001, 0.99)
     total_raw = pp.remove_negs(total_raw, 'BikeRides')
-    print(total_raw.describe())
+
 
     # Get ID col
     ids = total_raw['ID']
@@ -43,11 +58,9 @@ def get_input():
 
     # Normalise cols
     processed = pp.process(selected)
+    print(processed.describe())
 
 
-    # pprint(total_normalised)
-
-    # pprint(total_normalised)
 
     # one hot categorical variables:
     cat_features = ['Month', 'Weekday']
@@ -56,25 +69,13 @@ def get_input():
 
     train, test = train_test_split(processed)
 
-    #print("TOTOGOGJIOT")
-    #pprint(total_normalised)
-    #print("TOTOGOGJIOT")
-
     # Split data into x and y
     x_train, y_train = xy_split(train)
     x_test, y_test = xy_split(test)
 
-    # pprint(x_train)
-    # pprint(x_test)
-    # print(x_test.describe())
-    # print(y_test.describe())
-
-
     # From Pandas to Numpy
     x_train = x_train.reindex_axis(sorted(x_train.columns), axis=1).values
     x_test = x_test.reindex_axis(sorted(x_test.columns), axis=1).values
-
-
 
     y_train = y_train.values
     y_test = y_test.values

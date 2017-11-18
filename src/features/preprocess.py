@@ -11,13 +11,19 @@ def fix_nan(df):
     return df.dropna()
 
 def remove_negs(df, col):
-    print(col)
-    df = df[df[col] > 0]
+    df = df.ix[df[col] > 0]
     return df
+
+# def swap_pcrp(df):
+#     for i, r in df.iterrows():
+#         if(r['month'] == 1):
+#             r['']
 
 def process(df):
     # Select cols to normalise
     total = df
+
+    # total = swap_prcp(total)
 
     # total = remove_negs(total, "SNOW")
     total = fix_outliers(total, 'TMIN', 0.25, 0.75)
@@ -26,8 +32,6 @@ def process(df):
     total = fix_outliers(total, 'TAVG', 0.25, 0.75)
     # total = fix_outliers(total, 'SNOW', 0.25, 0.75)
     # total = fix_outliers(total, 'PRCP', 0.25, 0.75)
-
-    print(total.describe())
 
     total = fix_nan(total)
 

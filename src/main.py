@@ -17,7 +17,9 @@ def run():
     #############################
     ###         Data          ###
     #############################
-    (x_train, y_train, x_test, y_test, id) = input.get_input()
+    (x_train, y_train, x_test, y_test, ids) = input.get_input()
+
+    real_test_data = input.real_test_data()
 
     ##############################
     ###    Keras Regression    ###
@@ -51,6 +53,20 @@ def run():
 
     total_guess = []
     total_actual = []
+    output = []
+
+    for i in range(len(real_test_data)):
+        guess = random_forest.predict([real_test_data[i, :]])
+        total_guess.append(guess)
+
+        output.append((ids[i]+1, guess[0]))
+
+    with open("out/Results.csv", "w") as f:
+        for i in output:
+            i = [str(k) for k in i]
+            f.write(",".join(i))
+            f.write("\n")
+
     for i in range(len(x_test)):
         guess = random_forest.predict([x_test[i, :]])
         actual = y_test[i, :]

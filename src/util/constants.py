@@ -22,3 +22,9 @@ TOTAL_TRAINING = "data/train.csv"
 TESTING = "data/Testing.csv"
 
 FINAL_TEST = "data/Final Test.csv"
+
+PCRP_SWAP = {
+    "5":"11",
+    "6":"12",
+    "7":"1"
+}
