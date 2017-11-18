@@ -1,2 +1,2 @@
 def preprocess(df):
-    return df
+    return df.dropna()

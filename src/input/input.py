@@ -2,6 +2,8 @@ import pandas as pd
 from util.constants import TOTAL_TRAINING
 from features import preprocess as pp
 
+import numpy as np
+
 
 def train_test_split(df, train_percent=0.8):
     '''Randomly samples and splits data into train/test split.'''
@@ -17,15 +19,22 @@ def train_test_split(df, train_percent=0.8):
 def get_input():
     total_raw = load_csv(TOTAL_TRAINING)
 
-    # TODO: Implement preprocessing
+    # Drop NaN values
     total_prep = pp.preprocess(total_raw)
+
 
     train, test = train_test_split(total_prep)
 
+    # Split data into x and y
     x_train, y_train = xy_split(train)
     x_test, y_test = xy_split(test)
 
+    # From Pandas to Numpy
+    x_train = x_train.values
+    x_test = x_test.values
 
+    y_train = y_train.values
+    y_test = y_test.values
 
     return (x_train, y_train, x_test, y_test)
 

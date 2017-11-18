@@ -1,6 +1,6 @@
 from input import input
 from model.keras import Kegression
-from util import graph_functions
+from util.graph import graph_functions
 from util import constants as const
 
 from model import get_model
@@ -27,18 +27,18 @@ def run():
     ### Random Forest Regression ###
     ################################
 
-    rf = get_model.from_name("random_forest")
-    random_forest = rf(const.N_ESTIMATORS)
-    random_forest.train(x_train, y_train, x_test, y_test)
+    # rf = get_model.from_name("random_forest")
+    # random_forest = rf(const.N_ESTIMATORS)
+    # random_forest.train(x_train, y_train, x_test, y_test)
 
     #############################
     ###    Output & Graphs    ###
     #############################
     # Finally create our output (graphs/predictions).
     graph_functions.plot_loss(history.history, "loss_plot")
-    graph_functions.plot_accuracy(history.history, "accuracy_plot")
+    graph_functions.plot_mean_squared_error(history.history, "mse_plot")
 
-    graph_functions.plot_with_seaborn(history.history)
+#    graph_functions.plot_with_seaborn(history.history)
 
     print(":)")
 

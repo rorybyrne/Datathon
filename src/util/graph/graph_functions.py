@@ -7,15 +7,15 @@ import pickle
 import seaborn as sns
 
 # Plotting functions. All use SVG as they are small and can zoom.
-def plot_accuracy(hist_obj, filename, title="Accuracy"):
+def plot_mean_squared_error(hist_obj, filename, title="Mean Squared Error"):
     '''Plots the train/test accuracy over epochs for hist_obj.'''
-    plt.plot(hist_obj['acc'])
-    plt.plot(hist_obj['val_acc'])
+    plt.plot(hist_obj['mean_squared_error'])
+    plt.plot(hist_obj['val_mean_squared_error'])
     plt.title(title)
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig("../graph/{}.svg".format(filename), format='svg')
+    plt.savefig("graph/{}.svg".format(filename), format='svg')
     plt.clf()
 
 
@@ -27,7 +27,7 @@ def plot_loss(hist_obj, filename, title="Loss"):
     plt.ylabel('loss')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig("../graph/{}.svg".format(filename), format='svg')
+    plt.savefig("graph/{}.svg".format(filename), format='svg')
     plt.clf()
 
 
@@ -61,8 +61,8 @@ def plot_with_seaborn(hist_obj):
     axes[0].set_title("Loss")
 
     # Plot the accuracy.
-    axes[1].plot(df['val_acc'], lw=test_lw)
-    axes[1].plot(df['acc'], alpha=train_alpha, lw=train_lw)
+    axes[1].plot(df['val_mean_squared_error'], lw=test_lw)
+    axes[1].plot(df['mean_squared_error'], alpha=train_alpha, lw=train_lw)
     axes[1].set_title("Accuracy")
 
     # Set the legend.
@@ -76,4 +76,4 @@ def plot_with_seaborn(hist_obj):
     plt.tight_layout()
 
     # Save the output figure.
-    plt.savefig("../graph/combined_graphs.png")
+    plt.savefig("graph/combined_graphs.png")
