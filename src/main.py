@@ -11,7 +11,7 @@ def run():
     #############################
     ###         Data          ###
     #############################
-    (x_train, y_train, x_test, y_test) = input.get_input()
+    (x_train, y_train, x_test, y_test, id) = input.get_input()
 
     ##############################
     ###    Keras Regression    ###

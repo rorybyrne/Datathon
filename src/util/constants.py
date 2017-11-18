@@ -19,3 +19,7 @@ TRAIN_FILES = {
 }
 
 TOTAL_TRAINING = "data/train.csv"
+
+TESTING = "data/Testing.csv"
+
+FINAL_TEST = "data/Final Test.csv"
