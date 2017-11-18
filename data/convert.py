@@ -26,4 +26,7 @@ cleaned_df['Weekday'] = cleaned_df.Date.apply(lambda x:
             int(x.split("/")[1]),
             int(x.split("/")[0])).strftime("%w"))+6) % 7)
 
+# Make holiday a boolean.
+cleaned_df['Holiday'] = (cleaned_df['Holiday'] != "No").apply(lambda x: 1 if x else 0)
+
 cleaned_df.to_csv("train.csv")
