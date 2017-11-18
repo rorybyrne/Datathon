@@ -40,33 +40,20 @@ def get_input():
     # Get relevant cols
     selected = total_dropped_nan[['Weekday', 'Month', 'AWND', 'PRCP', 'SNOW', 'TAVG', 'TMAX', 'TMIN', 'BikeRides', 'Holiday']]
 
-    # Select cols to normalise
-    to_normalise = selected[['AWND', 'PRCP', 'SNOW', 'TAVG', 'TMAX', 'TMIN']]
-    print("to_normalise shape: (%s, %s)" % to_normalise.shape)
-    pprint(to_normalise)
-
-    # Select non-normalise cols
-    not_normalise = selected[['Weekday', 'Month', 'BikeRides', 'Holiday']].reset_index()
-    print("not_normalise shape: (%s, %s)" % not_normalise.shape)
-    pprint(not_normalise)
-
     # Normalise cols
-    normalised = pp.normalise(to_normalise)
+    normalised = pp.process(selected)
 
-    # Concat
-    total_normalised = not_normalise.join(normalised)
-    print("Total normalised shape: (%s, %s)" % total_normalised.shape)
-    # pprint(total_normalised)
 
     # pprint(total_normalised)
 
+    # pprint(total_normalised)
 
     # one hot categorical variables:
     cat_features = ['Month', 'Weekday']
     for feature in cat_features:
-        total_normalised = pp.get_one_hot(total_normalised, feature)
+        total_normalised = pp.get_one_hot(normalised, feature)
 
-    train, test = train_test_split(total_normalised)
+    train, test = train_test_split(normalised)
 
     #print("TOTOGOGJIOT")
     #pprint(total_normalised)

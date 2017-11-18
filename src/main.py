@@ -23,6 +23,10 @@ def run():
     # KERAS ONLY
     history = kegression.train(x_train, y_train, x_test, y_test)
 
+    preds = kegression.predict(x_test)
+    for i, j in zip(preds, y_test):
+        print("Guess %s || Actual %s" % (i[0], j[0]))
+
     ################################
     ### Random Forest Regression ###
     ################################
