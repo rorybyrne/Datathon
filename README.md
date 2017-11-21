@@ -1,2 +1,2 @@
 # Datathon
-A skeleton for the AIB DataHack 2017
+Neural NotWork's attempt at the AIB DataHack 2017
